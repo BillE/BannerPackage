@@ -10,7 +10,6 @@ use Banner\TimeZones\TimeZones;
  */
 class BannerManager
 {
-    private int $ip_address;
     private array $office_ips;
     private string $time_zone;
     private object $dao;
@@ -46,16 +45,37 @@ class BannerManager
      *
      * TODO: error-handling including error codes
      */
-    function display(string $ip_address): string
+    function get(string $ip_address): object
     {
-        $banner_text = ''; // TODO: placeholder
+        $current_timestamp = time();
+        $eligible_banners = array();
 
-        $current_timestamp = date(time());
-        // get all eligible banners
+        foreach ($this->dao->getAll() as $banner) {
+            if ($this->isInOffice($ip_address)) {
+                if ($current_timestamp <= $banner->getDisplayTimestampTo() && $banner->getDisplayTimestampFrom() >= $banner->getDisplayTimestampFrom()) {
+                    $eligible_banners[] = $banner;
+                }
+            } else {
+                if ($current_timestamp <= $banner->getDisplayTimestampTo()) {
+                    $eligible_banners[] = $banner;
+                }
+            }
+        }
 
+        return $this->selectRandom($eligible_banners);
+    }
 
-        // if more than one, use weighting
-        return $banner_text;
+    private function selectRandom(array $candidates) : object {
+        if (count($candidates) == 1) return $candidates[0];
+        $weighted_array = array();
+        foreach ($candidates as $banner) {
+            $count = $banner->getWeight * 10;
+            for ($i = 0; $i < $count; $i++) {
+                $weighted_array[] = $banner->getName();
+            }
+        }
+
+        return $this->dao->get($weighted_array[rand(0, count($weighted_array))]);
     }
 
     function add(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $uri)
@@ -63,7 +83,7 @@ class BannerManager
         $this->dao->add($display_timestamp_from, $display_timestamp_to, $display_weight, $name, $uri);
     }
 
-    private function isInOffice(string $ip_address): boolIs
+    private function isInOffice(string $ip_address): bool
     {
         return (in_array($ip_address, $this->office_ips));
     }
@@ -81,7 +101,6 @@ class BannerManager
     {
         // get collection of banners to filter
 
-
     }
 
     /**
@@ -92,7 +111,6 @@ class BannerManager
     public function getAll() : array
     {
         // get collection of banners to filter
-
         return $this->dao->getAll();
     }
 

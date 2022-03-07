@@ -10,7 +10,7 @@ PHP version: This software was developed using PHP version 8.1.3. It has not bee
 
 Composer: This package manager is required. It can be found at https://getcomposer.org/
 
-PHPUnit: This package is used for all testing and can be found here: https://phpunit.de/ It is set as a dependency in 
+PHPUnit: This package is used for all testing and can be found at https://phpunit.de/ It is set as a dependency in 
 composer.json and so should not need to be downloaded manually. 
 
 ## Details
