@@ -1,5 +1,11 @@
 <?php
 
+namespace Banner;
+
+/**
+ * Banner to be displayed by consumer of the Banner microservice.
+ *
+ */
 class Banner
 {
     private int $display_timestamp_from;
@@ -14,7 +20,6 @@ class Banner
         $this->display_weight = $display_weight;
         $this->name = $name;
         $this->banner_uri = $banner_uri;
-
     }
 
 
