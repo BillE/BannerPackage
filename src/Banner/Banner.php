@@ -8,59 +8,59 @@ namespace Banner;
  */
 class Banner
 {
-    private int $display_timestamp_to;
-    private int $display_timestamp_from;
-    private float $display_weight;
+    private int $timestamp_to;
+    private int $timestamp_from;
+    private float $weight;
     private string $name;
-    private string $banner_uri;
+    private string $uri;
 
 
     /**
      * @return int
      */
-    public function getDisplayTimestampFrom(): int
+    public function getTimestampFrom(): int
     {
-        return $this->display_timestamp_from;
+        return $this->timestamp_from;
     }
 
     /**
-     * @param int $display_timestamp_from
+     * @param int $timestamp_from
      */
-    public function setDisplayTimestampFrom(int $display_timestamp_from): void
+    public function setTimestampFrom(int $timestamp_from): void
     {
-        $this->display_timestamp_from = $display_timestamp_from;
+        $this->timestamp_from = $timestamp_from;
     }
 
     /**
      * @return int
      */
-    public function getDisplayTimestampTo(): int
+    public function getTimestampTo(): int
     {
-        return $this->display_timestamp_to;
+        return $this->timestamp_to;
     }
 
     /**
-     * @param int $display_timestamp_to
+     * @param int $timestamp_to
      */
-    public function setDisplayTimestampTo(int $display_timestamp_to): void
+    public function setTimestampTo(int $timestamp_to): void
     {
-        $this->display_timestamp_to = $display_timestamp_to;
+        $this->timestamp_to = $timestamp_to;
     }
 
     /**
      * @return float
      */
-    public function getDisplayWeight(): float
+    public function getWeight(): float
     {
-        return $this->display_weight;
+        return $this->weight;
     }
 
     /**
-     * @param float $display_weight
+     * @param float $weight
      */
-    public function setDisplayWeight(float $display_weight): void
+    public function setWeight(float $weight): void
     {
-        $this->display_weight = $display_weight;
+        $this->weight = $weight;
     }
 
     /**
@@ -82,26 +82,26 @@ class Banner
     /**
      * @return string
      */
-    public function getBannerUri(): string
+    public function getUri(): string
     {
-        return $this->banner_uri;
+        return $this->uri;
     }
 
     /**
-     * @param string $banner_uri
+     * @param string $uri
      */
-    public function setBannerUri(string $banner_uri): void
+    public function setUri(string $uri): void
     {
-        $this->banner_uri = $banner_uri;
+        $this->uri = $uri;
     }
 
 
     function __construct(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $banner_uri) {
-        $this->display_timestamp_from = $display_timestamp_from;
-        $this->display_timestamp_to = $display_timestamp_to;
-        $this->display_weight = $display_weight;
+        $this->timestamp_from = $display_timestamp_from;
+        $this->timestamp_to = $display_timestamp_to;
+        $this->weight = $display_weight;
         $this->name = $name;
-        $this->banner_uri = $banner_uri;
+        $this->uri = $banner_uri;
     }
 
 

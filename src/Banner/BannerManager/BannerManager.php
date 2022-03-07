@@ -52,11 +52,11 @@ class BannerManager
 
         foreach ($this->dao->getAll() as $banner) {
             if ($this->isInOffice($ip_address)) {
-                if ($current_timestamp <= $banner->getDisplayTimestampTo() && $banner->getDisplayTimestampFrom() >= $banner->getDisplayTimestampFrom()) {
+                if ($current_timestamp <= $banner->getTimestampTo() && $banner->getTimestampFrom() >= $banner->getTimestampFrom()) {
                     $eligible_banners[] = $banner;
                 }
             } else {
-                if ($current_timestamp <= $banner->getDisplayTimestampTo()) {
+                if ($current_timestamp <= $banner->getTimestampTo()) {
                     $eligible_banners[] = $banner;
                 }
             }
@@ -65,17 +65,23 @@ class BannerManager
         return $this->selectRandom($eligible_banners);
     }
 
+    /**
+     * Select a random banner from array of candidates.
+     *   Uses an array so algorithmic complexity is O(1).
+     *
+     * @param array $candidates
+     * @return object
+     */
     private function selectRandom(array $candidates) : object {
         if (count($candidates) == 1) return $candidates[0];
         $weighted_array = array();
         foreach ($candidates as $banner) {
-            $count = $banner->getWeight * 10;
+            $count = $banner->getWeight() * 10;
             for ($i = 0; $i < $count; $i++) {
                 $weighted_array[] = $banner->getName();
             }
         }
-
-        return $this->dao->get($weighted_array[rand(0, count($weighted_array))]);
+        return $this->dao->get( $weighted_array[rand(0, count($weighted_array)-1)] );
     }
 
     function add(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $uri)
@@ -99,7 +105,7 @@ class BannerManager
      */
     private function getActive(int $current_timestamp, bool $is_office)
     {
-        // get collection of banners to filter
+
 
     }
 

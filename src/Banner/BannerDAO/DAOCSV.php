@@ -37,8 +37,11 @@ class DAOCSV implements DAOInterface
 
     function get(string $name): object
     {
-
-        return $this->banners[0]; // TODO: this is a placeholder
+        if ($this->banners == null) return new stdClass();
+        foreach ($this->banners as $banner) {
+            if ($banner->getName() == $name) return $banner;
+        }
+        return new stdClass();
     }
 
     function getAll(): array
