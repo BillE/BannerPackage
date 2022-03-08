@@ -1,0 +1,19 @@
+{
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "bill eberle",
+      "email": "bill.eberle@gmail.com"
+    }
+  ],
+  "require": {
+    "phpunit/phpunit": "9.5.2",
+    "ext-http": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Banner\\": "src/Banner/"
+    }
+  }
+}
