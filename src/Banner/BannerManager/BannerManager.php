@@ -5,6 +5,7 @@ use Banner\Banner;
 use Banner\BannerDAO\DAO;
 use Exception;
 use InvalidArgumentException;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Controller for all interaction with Banner package.
@@ -15,7 +16,7 @@ class BannerManager
     private array $office_ips;
     private object $dao;
 
-    function __construct()
+    #[Pure] function __construct()
     {
         $this->office_ips = array('192.0.2.10', '198.51.100.3', '203.0.113.254');
         $this->dao = new DAO();
@@ -84,11 +85,11 @@ class BannerManager
      * @param string $name
      * @param string $uri
      * @return void
-     * @throws \Exception
+     * @throws InvalidArgumentException|Exception
      */
     public function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : void
     {
-        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        $error_string = Banner::validateInput($weight, $name, $uri);
         if ($error_string != '') throw new InvalidArgumentException($error_string);
         if ($this->exists($name)) throw new Exception("A banner with the name ".$name." already exists. ");
 

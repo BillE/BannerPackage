@@ -16,7 +16,7 @@ class DAO implements DAOInterface
 
     function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : void
     {
-        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        $error_string = Banner::validateInput($weight, $name, $uri);
         if ($error_string != '') throw new InvalidArgumentException($error_string);
         $this->banners[] = new Banner($timestamp_from, $timestamp_to, $weight, $name, $uri);
     }
@@ -58,7 +58,7 @@ class DAO implements DAOInterface
      */
     function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : bool
     {
-        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        $error_string = Banner::validateInput($weight, $name, $uri);
         if ($error_string != '') throw new InvalidArgumentException($error_string);
 
         foreach ($this->banners as $banner) {

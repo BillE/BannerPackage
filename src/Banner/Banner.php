@@ -21,7 +21,7 @@ class Banner
      */
     function __construct(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri)
     {
-        $error_string = $this->validateInput($display_timestamp_from, $display_timestamp_to, $weight, $name, $uri);
+        $error_string = $this->validateInput($weight, $name, $uri);
         if ($error_string != '') throw new InvalidArgumentException($error_string);
 
         $this->timestamp_from = $display_timestamp_from;
@@ -118,7 +118,7 @@ class Banner
         $this->uri = $uri;
     }
 
-    public static function validateInput(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri) : string {
+    public static function validateInput(float $weight, string $name, string $uri) : string {
         if ($weight > 1.0) return 'Weight must be less than 1.0.';
         if ($name == '') return 'Name must not be empty.';
         if ($uri =='') return 'URI must not be empty.';
