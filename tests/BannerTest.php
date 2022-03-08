@@ -122,36 +122,4 @@ class BannerTest extends TestCase
         self::assertGreaterThan(3.5,$ratio);
         self::assertLessThan(4.5,$ratio);
     }
-
-    public function testTBD()
-    {
-        $bannerManager = new Banner\BannerManager\BannerManager();
-
-        // Add a valid banner with weight 0.1 (A)
-        $from_datetime_a = strtotime("-1 day");
-        $to_datetime_a = strtotime("+1 day");
-        $name_a = "Banner A";
-        $uri_a = "http://www.example.com/image_a.jpg";
-        $weight_a = 0.1;
-
-        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
-
-        // Add a valid banner (B)
-        $from_datetime_b = strtotime("+1 day");
-        $to_datetime_b = strtotime("+1 week");
-        $name_b = "Banner B";
-        $uri_b = "http://www.example.com/image_b.jpg";
-        $weight_b = 0.4;
-
-        $bannerManager->add($from_datetime_b,$to_datetime_b,$weight_b,$name_b,$uri_b);
-
-        // Add a valid banner (C)
-        $from_datetime_c = strtotime("+1 day");
-        $to_datetime_c = strtotime("+1 week");
-        $name_c = "Banner C";
-        $uri_c = "http://www.example.com/image_c.jpg";
-        $weight_c = 0.4;
-
-        $bannerManager->add($from_datetime_c,$to_datetime_c,$weight_c,$name_c,$uri_c);
-    }
 }

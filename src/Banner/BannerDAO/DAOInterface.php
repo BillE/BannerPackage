@@ -7,13 +7,9 @@ namespace Banner\BannerDAO;
  */
 interface DAOInterface
 {
-    function add(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $banner_uri);
-
-    function get(string $name): object;
-
+    function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri);
+    function get(string $name): ?object;
     function getAll(): array;
-
-    function update(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $banner_uri);
-
+    function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri);
     function delete(string $banner_name);
 }

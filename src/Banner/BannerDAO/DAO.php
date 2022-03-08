@@ -9,9 +9,9 @@ use Banner\Banner;
  *  Supports CRUD operations.
  *
  */
-class DAOCSV implements DAOInterface
+class DAO implements DAOInterface
 {
-    private $banners = array();
+    private array $banners = array();
     private string $path_to_files;
     private const PATH_TO_FILES = '/tmp/testing';
 
@@ -35,13 +35,13 @@ class DAOCSV implements DAOInterface
         $this->banners[] = new Banner($display_timestamp_from, $display_timestamp_to, $display_weight, $name, $uri);
     }
 
-    function get(string $name): object
+    function get(string $name): ?object
     {
-        if ($this->banners == null) return new stdClass();
+        if ($this->banners == null) return null;
         foreach ($this->banners as $banner) {
             if ($banner->getName() == $name) return $banner;
         }
-        return new stdClass();
+        return null;
     }
 
     function getAll(): array

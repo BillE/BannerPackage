@@ -3,7 +3,7 @@
 namespace Banner;
 
 /**
- * Banner to be displayed by consumer of the Banner microservice.
+ * Banner to be displayed by consumer of the Banner service.
  *
  */
 class Banner
@@ -13,7 +13,6 @@ class Banner
     private float $weight;
     private string $name;
     private string $uri;
-
 
     /**
      * @return int

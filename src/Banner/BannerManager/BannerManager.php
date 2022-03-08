@@ -1,7 +1,7 @@
 <?php
 
 namespace Banner\BannerManager;
-use Banner\BannerDAO\DAOCSV;
+use Banner\BannerDAO\DAO;
 use Banner\TimeZones\TimeZones;
 
 /**
@@ -19,7 +19,7 @@ class BannerManager
         // TODO: this is hidden in the code. Let's move it somewhere else. Maybe config.php
         $this->office_ips = array('192.0.2.10', '198.51.100.3', '203.0.113.254');
         $this->time_zone = date_default_timezone_get();
-        $this->dao = new DAOCSV();
+        $this->dao = new DAO();
     }
 
     /**
@@ -36,27 +36,28 @@ class BannerManager
     }
 
     /**
-     * @return string return the name of banner to display
-     *      Selection criteria include:
+     * Selection criteria include:
      *          - IP address of client
      *          - Time of day
      *          - Time zone. We can NOT rely on local sever time as code can be deployed across multiple time zones
      *          - Weighting of eligible banners
      *
+     * @return return a banner object or null if no matches found
+     *
      * TODO: error-handling including error codes
      */
-    function get(string $ip_address): object
+    function get(string $ip_address) : ?object
     {
         $current_timestamp = time();
         $eligible_banners = array();
 
         foreach ($this->dao->getAll() as $banner) {
             if ($this->isInOffice($ip_address)) {
-                if ($current_timestamp <= $banner->getTimestampTo() && $banner->getTimestampFrom() >= $banner->getTimestampFrom()) {
+                if ($current_timestamp <= $banner->getTimestampTo()) {
                     $eligible_banners[] = $banner;
                 }
             } else {
-                if ($current_timestamp <= $banner->getTimestampTo()) {
+                if ($current_timestamp <= $banner->getTimestampTo() && $current_timestamp >= $banner->getTimestampFrom()) {
                     $eligible_banners[] = $banner;
                 }
             }
@@ -72,7 +73,9 @@ class BannerManager
      * @param array $candidates
      * @return object
      */
-    private function selectRandom(array $candidates) : object {
+    private function selectRandom(array $candidates) : ?object
+    {
+        if (count($candidates) == 0) return null;
         if (count($candidates) == 1) return $candidates[0];
         $weighted_array = array();
         foreach ($candidates as $banner) {
