@@ -1,8 +1,8 @@
 <?php
 
 namespace Banner\BannerManager;
+use Banner\Banner;
 use Banner\BannerDAO\DAO;
-use Banner\TimeZones\TimeZones;
 
 /**
  * Controller for all interaction with package.
@@ -11,28 +11,13 @@ use Banner\TimeZones\TimeZones;
 class BannerManager
 {
     private array $office_ips;
-    private string $time_zone;
     private object $dao;
 
     function __construct()
     {
         // TODO: this is hidden in the code. Let's move it somewhere else. Maybe config.php
         $this->office_ips = array('192.0.2.10', '198.51.100.3', '203.0.113.254');
-        $this->time_zone = date_default_timezone_get();
         $this->dao = new DAO();
-    }
-
-    /**
-     * Override default time zone.
-     *
-     * @param string $time_zone
-     * @return void
-     */
-    function setTimezone(string $time_zone)
-    {
-        if (TimeZones::IsValidTimezone($time_zone)) {
-            $this->time_zone = $time_zone;
-        }
     }
 
     /**
@@ -42,12 +27,15 @@ class BannerManager
      *          - Time zone. We can NOT rely on local sever time as code can be deployed across multiple time zones
      *          - Weighting of eligible banners
      *
-     * @return return a banner object or null if no matches found
-     *
-     * TODO: error-handling including error codes
+     * @return ?object banner object or null if no matches found
+     * @throws \Exception
      */
     function get(string $ip_address) : ?object
     {
+        if (! filter_var($ip_address, FILTER_VALIDATE_IP)) {
+            throw new \Exception('A valid IP address must be passed.');
+        }
+
         $current_timestamp = time();
         $eligible_banners = array();
 
@@ -71,7 +59,7 @@ class BannerManager
      *   Uses an array so algorithmic complexity is O(1).
      *
      * @param array $candidates
-     * @return object
+     * @return ?object
      */
     private function selectRandom(array $candidates) : ?object
     {
@@ -87,29 +75,48 @@ class BannerManager
         return $this->dao->get( $weighted_array[rand(0, count($weighted_array)-1)] );
     }
 
-    function add(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $uri)
+    /**
+     * Add a banner
+     *
+     * @param int $timestamp_from
+     * @param int $timestamp_to
+     * @param float $weight
+     * @param string $name
+     * @param string $uri
+     * @return void
+     * @throws \Exception
+     */
+    public function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
     {
-        $this->dao->add($display_timestamp_from, $display_timestamp_to, $display_weight, $name, $uri);
-    }
+        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        if ($error_string != '') throw new \Exception($error_string);
+        if ($this->exists($name)) throw new \Exception("A banner with the name ".$name." already exists. ");
 
-    private function isInOffice(string $ip_address): bool
-    {
-        return (in_array($ip_address, $this->office_ips));
+        $this->dao->add($timestamp_from, $timestamp_to, $weight, $name, $uri);
     }
 
     /**
-     * Get a list of all eligible banners. Based on time and location (in office vs. out of office).
+     * Check if a banner already exists
      *
-     *
-     * @param string $current_time
-     * @param bool $is_office
-     * @return void
-     *
+     * @param string $name
+     * @return bool
      */
-    private function getActive(int $current_timestamp, bool $is_office)
+    private function exists(string $name) : bool {
+        foreach ($this->dao->getAll() as $banner) {
+            if ($banner->getName() == $name) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if IP address is in the office
+     *
+     * @param string $ip_address
+     * @return bool
+     */
+    private function isInOffice(string $ip_address): bool
     {
-
-
+        return (in_array($ip_address, $this->office_ips));
     }
 
     /**

@@ -122,4 +122,33 @@ class BannerTest extends TestCase
         self::assertGreaterThan(3.5,$ratio);
         self::assertLessThan(4.5,$ratio);
     }
+
+    /**
+     * Check retrieval of all banners
+     *
+     * @return void
+     */
+    public function testGetAll()
+    {
+
+    }
+    /**
+     * Check that public methods check for valid input
+     *
+     * @return void
+     */
+    public function testValidation()
+    {
+
+    }
+
+    /**
+     * Adding a banner with a name that already exists will throw an error.
+     *
+     * @return void
+     */
+    public function testUniqueBannerName()
+    {
+
+    }
 }

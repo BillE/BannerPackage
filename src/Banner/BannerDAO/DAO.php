@@ -12,27 +12,10 @@ use Banner\Banner;
 class DAO implements DAOInterface
 {
     private array $banners = array();
-    private string $path_to_files;
-    private const PATH_TO_FILES = '/tmp/testing';
 
-    /**
-     * Load all banners from data store. Currently, just flat files.
-     *
-     */
-    function __construct($path_to_files = self::PATH_TO_FILES)
+    function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
     {
-        $this->path_to_files = $path_to_files;
-        $this->loadFromDisk();
-    }
-
-    function __destruct()
-    {
-        $this->writeToDisk();
-    }
-
-    function add(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $uri)
-    {
-        $this->banners[] = new Banner($display_timestamp_from, $display_timestamp_to, $display_weight, $name, $uri);
+        $this->banners[] = new Banner($timestamp_from, $timestamp_to, $weight, $name, $uri);
     }
 
     function get(string $name): ?object
@@ -49,23 +32,38 @@ class DAO implements DAOInterface
         return $this->banners;
     }
 
-    function update(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $uri)
+    /**
+     * TODO: add logic
+     *
+     * @param int $display_timestamp_from
+     * @param int $display_timestamp_to
+     * @param float $display_weight
+     * @param string $name
+     * @param string $uri
+     * @return void
+     */
+    function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
     {
 
+        foreach ($this->banners as $banner) {
+            if ($banner->getName() == $name) {
+                $banner->setTimestampFrom($timestamp_from);
+                $banner->setTimestampTo($timestamp_to);
+                $banner->setWeight($weight);
+                $banner->setUri($uri);
+            }
+        }
     }
 
+    /**
+     * TODO: add logic
+     *
+     * @param string $name
+     * @return void
+     */
     function delete(string $name)
     {
 
     }
 
-    private function loadFromDisk()
-    {
-
-    }
-
-    private function writeToDisk()
-    {
-
-    }
 }

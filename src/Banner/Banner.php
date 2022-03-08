@@ -15,6 +15,20 @@ class Banner
     private string $uri;
 
     /**
+     * @throws \Exception
+     */
+    function __construct(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri) {
+        $error_string = $this->validateInput($display_timestamp_from, $display_timestamp_to, $weight, $name, $uri);
+        if ($error_string != '') throw new \Exception($error_string);
+
+        $this->timestamp_from = $display_timestamp_from;
+        $this->timestamp_to = $display_timestamp_to;
+        $this->weight = $weight;
+        $this->name = $name;
+        $this->uri = $uri;
+    }
+
+    /**
      * @return int
      */
     public function getTimestampFrom(): int
@@ -59,6 +73,7 @@ class Banner
      */
     public function setWeight(float $weight): void
     {
+        if ($weight > 1.0) throw new \Exception('Weight must be less than 1.0.');
         $this->weight = $weight;
     }
 
@@ -75,6 +90,7 @@ class Banner
      */
     public function setName(string $name): void
     {
+        if ($name == '') throw new Error('Name must not be empty.');
         $this->name = $name;
     }
 
@@ -91,17 +107,16 @@ class Banner
      */
     public function setUri(string $uri): void
     {
+        if ($uri =='') throw new Error('URI must not be empty.');
         $this->uri = $uri;
     }
 
+    public static function validateInput(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri) : string {
+        if ($weight > 1.0) return 'Weight must be less than 1.0.';
+        if ($name == '') return 'Name must not be empty.';
+        if ($uri =='') return 'URI must not be empty.';
 
-    function __construct(int $display_timestamp_from, int $display_timestamp_to, float $display_weight, string $name, string $banner_uri) {
-        $this->timestamp_from = $display_timestamp_from;
-        $this->timestamp_to = $display_timestamp_to;
-        $this->weight = $display_weight;
-        $this->name = $name;
-        $this->uri = $banner_uri;
+        return '';
     }
-
 
 }
