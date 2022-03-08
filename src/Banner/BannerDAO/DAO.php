@@ -14,6 +14,16 @@ class DAO implements DAOInterface
 {
     private array $banners = array();
 
+    /**
+     * Add a banner
+     *
+     * @param int $timestamp_from
+     * @param int $timestamp_to
+     * @param float $weight
+     * @param string $name
+     * @param string $uri
+     * @return void
+     */
     function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : void
     {
         $error_string = Banner::validateInput($weight, $name, $uri);
@@ -22,7 +32,7 @@ class DAO implements DAOInterface
     }
 
     /**
-     * Get a banner object according to rules
+     * Get a banner object by name
      *
      * @param string $name
      * @return object|null
@@ -37,9 +47,9 @@ class DAO implements DAOInterface
     }
 
     /**
-     * Get all banners, active or not
+     * Get all banners.
      *
-     * @return array
+     * @return array all banners
      */
     function getAll(): array
     {
@@ -54,7 +64,7 @@ class DAO implements DAOInterface
      * @param float $display_weight
      * @param string $name
      * @param string $uri
-     * @return bool
+     * @return bool true if banner was found and updated
      */
     function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : bool
     {

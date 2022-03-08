@@ -60,7 +60,7 @@ class BannerManager
      *   Uses an array so algorithmic complexity is O(1).
      *
      * @param array $candidates
-     * @return ?object
+     * @return ?object banner
      */
     private function selectRandom(array $candidates) : ?object
     {
@@ -100,7 +100,7 @@ class BannerManager
      * Check if a banner already exists
      *
      * @param string $name
-     * @return bool
+     * @return bool true if banner exists
      */
     private function exists(string $name) : bool
     {
@@ -114,7 +114,7 @@ class BannerManager
      * Check if IP address is in the office
      *
      * @param string $ip_address
-     * @return bool
+     * @return bool true if ip address is in office
      */
     private function isInOffice(string $ip_address): bool
     {

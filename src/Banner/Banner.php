@@ -32,7 +32,9 @@ class Banner
     }
 
     /**
-     * @return int
+     * Get valid from timestamp
+     *
+     * @return int valid from timestamp
      */
     public function getTimestampFrom(): int
     {
@@ -40,7 +42,9 @@ class Banner
     }
 
     /**
-     * @param int $timestamp_from
+     * Set valid from timestamp
+     *
+     * @param int $timestamp_from valid from timestamp
      */
     public function setTimestampFrom(int $timestamp_from): void
     {
@@ -48,7 +52,9 @@ class Banner
     }
 
     /**
-     * @return int
+     * Get valid to timestamp
+     *
+     * @return int valid to timestamp
      */
     public function getTimestampTo(): int
     {
@@ -56,7 +62,9 @@ class Banner
     }
 
     /**
-     * @param int $timestamp_to
+     * Set valid to timestamp
+     *
+     * @param int $timestamp_to valid to timestamp
      */
     public function setTimestampTo(int $timestamp_to): void
     {
@@ -64,7 +72,9 @@ class Banner
     }
 
     /**
-     * @return float
+     * Get display weight of banner
+     *
+     * @return float display weight of banner
      */
     public function getWeight(): float
     {
@@ -72,7 +82,9 @@ class Banner
     }
 
     /**
-     * @param float $weight
+     * Set display weight of banner
+     *
+     * @param float $weight display weight of banner
      * @return void
      * @throws InvalidArgumentException
      */
@@ -83,7 +95,9 @@ class Banner
     }
 
     /**
-     * @return string
+     * Get name of banner
+     *
+     * @return string name of banner
      */
     public function getName(): string
     {
@@ -91,7 +105,9 @@ class Banner
     }
 
     /**
-     * @param string $name
+     * Set name of banner
+     *
+     * @param string $name name of banner
      * @throws InvalidArgumentException
      */
     public function setName(string $name): void
@@ -101,7 +117,9 @@ class Banner
     }
 
     /**
-     * @return string
+     * Get URI of banner
+     *
+     * @return string URI of banner
      */
     public function getUri(): string
     {
@@ -109,7 +127,9 @@ class Banner
     }
 
     /**
-     * @param string $uri
+     * Set URI of banner
+     *
+     * @param string $uri URI of banner
      * @throws InvalidArgumentException
      */
     public function setUri(string $uri): void
@@ -118,6 +138,14 @@ class Banner
         $this->uri = $uri;
     }
 
+    /**
+     * Validate the arguments passed
+     *
+     * @param float $weight weight of banner
+     * @param string $name name of banner
+     * @param string $uri URI of banner
+     * @return string error string or empty if no errors
+     */
     public static function validateInput(float $weight, string $name, string $uri) : string {
         if ($weight > 1.0) return 'Weight must be less than 1.0.';
         if ($name == '') return 'Name must not be empty.';
