@@ -3,21 +3,30 @@
 namespace Banner\BannerDAO;
 
 use Banner\Banner;
+use http\Exception\InvalidArgumentException;
 
 /**
  * Layer of abstraction around banner objects.
- *  Supports CRUD operations.
+ *  Supports basic CRUD operations.
  *
  */
 class DAO implements DAOInterface
 {
     private array $banners = array();
 
-    function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
+    function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : void
     {
+        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        if ($error_string != '') throw new InvalidArgumentException($error_string);
         $this->banners[] = new Banner($timestamp_from, $timestamp_to, $weight, $name, $uri);
     }
 
+    /**
+     * Get a banner object according to rules
+     *
+     * @param string $name
+     * @return object|null
+     */
     function get(string $name): ?object
     {
         if ($this->banners == null) return null;
@@ -27,23 +36,30 @@ class DAO implements DAOInterface
         return null;
     }
 
+    /**
+     * Get all banners, active or not
+     *
+     * @return array
+     */
     function getAll(): array
     {
         return $this->banners;
     }
 
     /**
-     * TODO: add logic
+     * Update a banner, referenced by name
      *
      * @param int $display_timestamp_from
      * @param int $display_timestamp_to
      * @param float $display_weight
      * @param string $name
      * @param string $uri
-     * @return void
+     * @return bool
      */
-    function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
+    function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : bool
     {
+        $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
+        if ($error_string != '') throw new InvalidArgumentException($error_string);
 
         foreach ($this->banners as $banner) {
             if ($banner->getName() == $name) {
@@ -51,19 +67,27 @@ class DAO implements DAOInterface
                 $banner->setTimestampTo($timestamp_to);
                 $banner->setWeight($weight);
                 $banner->setUri($uri);
+                return true;
             }
         }
+        return false;
     }
 
     /**
-     * TODO: add logic
+     * Delete a banner, referenced by name
      *
      * @param string $name
-     * @return void
+     * @return bool true if banner existed, false otherwise
      */
-    function delete(string $name)
+    function delete(string $name) : bool
     {
-
+        for ($i = 0; $i < count($this->banners); $i++) {
+            if ($this->banners[$i]->getName() == $name) {
+                unset($this->banners[$i]);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

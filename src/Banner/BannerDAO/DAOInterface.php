@@ -11,5 +11,5 @@ interface DAOInterface
     function get(string $name): ?object;
     function getAll(): array;
     function update(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri);
-    function delete(string $banner_name);
+    function delete(string $name);
 }

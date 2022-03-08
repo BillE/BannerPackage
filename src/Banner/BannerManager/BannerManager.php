@@ -3,9 +3,11 @@
 namespace Banner\BannerManager;
 use Banner\Banner;
 use Banner\BannerDAO\DAO;
+use Exception;
+use InvalidArgumentException;
 
 /**
- * Controller for all interaction with package.
+ * Controller for all interaction with Banner package.
  *
  */
 class BannerManager
@@ -15,25 +17,23 @@ class BannerManager
 
     function __construct()
     {
-        // TODO: this is hidden in the code. Let's move it somewhere else. Maybe config.php
         $this->office_ips = array('192.0.2.10', '198.51.100.3', '203.0.113.254');
         $this->dao = new DAO();
     }
 
     /**
-     * Selection criteria include:
+     * Return a banner. Selection criteria include:
      *          - IP address of client
      *          - Time of day
-     *          - Time zone. We can NOT rely on local sever time as code can be deployed across multiple time zones
      *          - Weighting of eligible banners
      *
      * @return ?object banner object or null if no matches found
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     function get(string $ip_address) : ?object
     {
         if (! filter_var($ip_address, FILTER_VALIDATE_IP)) {
-            throw new \Exception('A valid IP address must be passed.');
+            throw new InvalidArgumentException('A valid IP address must be passed.');
         }
 
         $current_timestamp = time();
@@ -86,11 +86,11 @@ class BannerManager
      * @return void
      * @throws \Exception
      */
-    public function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri)
+    public function add(int $timestamp_from, int $timestamp_to, float $weight, string $name, string $uri) : void
     {
         $error_string = Banner::validateInput($timestamp_from, $timestamp_to, $weight, $name, $uri);
-        if ($error_string != '') throw new \Exception($error_string);
-        if ($this->exists($name)) throw new \Exception("A banner with the name ".$name." already exists. ");
+        if ($error_string != '') throw new InvalidArgumentException($error_string);
+        if ($this->exists($name)) throw new Exception("A banner with the name ".$name." already exists. ");
 
         $this->dao->add($timestamp_from, $timestamp_to, $weight, $name, $uri);
     }
@@ -101,7 +101,8 @@ class BannerManager
      * @param string $name
      * @return bool
      */
-    private function exists(string $name) : bool {
+    private function exists(string $name) : bool
+    {
         foreach ($this->dao->getAll() as $banner) {
             if ($banner->getName() == $name) return true;
         }
@@ -118,17 +119,4 @@ class BannerManager
     {
         return (in_array($ip_address, $this->office_ips));
     }
-
-    /**
-     * Get a list of all banners.
-     *
-     * @return array
-     */
-    public function getAll() : array
-    {
-        // get collection of banners to filter
-        return $this->dao->getAll();
-    }
-
-
 }

@@ -2,6 +2,8 @@
 
 namespace Banner;
 
+use http\Exception\InvalidArgumentException;
+
 /**
  * Banner to be displayed by consumer of the Banner service.
  *
@@ -15,11 +17,12 @@ class Banner
     private string $uri;
 
     /**
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
-    function __construct(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri) {
+    function __construct(int $display_timestamp_from, int $display_timestamp_to, float $weight, string $name, string $uri)
+    {
         $error_string = $this->validateInput($display_timestamp_from, $display_timestamp_to, $weight, $name, $uri);
-        if ($error_string != '') throw new \Exception($error_string);
+        if ($error_string != '') throw new InvalidArgumentException($error_string);
 
         $this->timestamp_from = $display_timestamp_from;
         $this->timestamp_to = $display_timestamp_to;
@@ -70,10 +73,12 @@ class Banner
 
     /**
      * @param float $weight
+     * @return void
+     * @throws InvalidArgumentException
      */
     public function setWeight(float $weight): void
     {
-        if ($weight > 1.0) throw new \Exception('Weight must be less than 1.0.');
+        if ($weight > 1.0) throw new InvalidArgumentException('Weight must be less than 1.0.');
         $this->weight = $weight;
     }
 
@@ -87,10 +92,11 @@ class Banner
 
     /**
      * @param string $name
+     * @throws InvalidArgumentException
      */
     public function setName(string $name): void
     {
-        if ($name == '') throw new Error('Name must not be empty.');
+        if ($name == '') throw new InvalidArgumentException('Name must not be empty.');
         $this->name = $name;
     }
 
@@ -104,10 +110,11 @@ class Banner
 
     /**
      * @param string $uri
+     * @throws InvalidArgumentException
      */
     public function setUri(string $uri): void
     {
-        if ($uri =='') throw new Error('URI must not be empty.');
+        if ($uri =='') throw new InvalidArgumentException('URI must not be empty.');
         $this->uri = $uri;
     }
 

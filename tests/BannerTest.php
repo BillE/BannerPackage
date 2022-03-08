@@ -124,31 +124,124 @@ class BannerTest extends TestCase
     }
 
     /**
-     * Check retrieval of all banners
-     *
-     * @return void
-     */
-    public function testGetAll()
-    {
-
-    }
-    /**
      * Check that public methods check for valid input
      *
      * @return void
      */
-    public function testValidation()
+    public function testInvalidFrom()
     {
+        $this->expectException(TypeError::class);
 
+        $from_datetime_a = "July 1, 2025";
+        $to_datetime_a = strtotime("+1 day");
+        $name_a = "Banner A";
+        $uri_a = "http://www.example.com/image_a.jpg";
+        $weight_a = 0.1;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
     }
 
     /**
-     * Adding a banner with a name that already exists will throw an error.
+     * Test that a non-integer TO date throws an exception
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testInvalidTo()
+    {
+        $this->expectException(TypeError::class);
+
+        $from_datetime_a = strtotime("+1 day");
+        $to_datetime_a = "July 1, 2025";
+        $name_a = "Banner A";
+        $uri_a = "http://www.example.com/image_a.jpg";
+        $weight_a = 0.1;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
+    }
+
+    /**
+     * Test that an empty date argument throws an exception
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testEmptyName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $from_datetime_a = strtotime("+1 day");
+        $to_datetime_a = strtotime("+1 week");
+        $name_a = "";
+        $uri_a = "http://www.example.com/image_a.jpg";
+        $weight_a = 0.1;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
+    }
+
+    /**
+     * Test that an invalid weight argument throws an exception
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testInvalidWeight()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $from_datetime_a = strtotime("+1 day");
+        $to_datetime_a = strtotime("+1 week");
+        $name_a = "Banner A";
+        $uri_a = "http://www.example.com/image_a.jpg";
+        $weight_a = 99;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
+    }
+
+    /**
+     * Test that an empty URI argument throws an exception
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testEmptyUri()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $from_datetime_a = strtotime("+1 day");
+        $to_datetime_a = strtotime("+1 week");
+        $name_a = "Banner A";
+        $uri_a = "";
+        $weight_a = 0.9;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
+    }
+
+    /**
+     * Test that adding a banner with a name that already exists will throw an error.
      *
      * @return void
      */
     public function testUniqueBannerName()
     {
+        $this->expectException(Exception::class);
 
+        // Add a valid banner with weight 0.1 (A)
+        $from_datetime_a = strtotime("-1 day");
+        $to_datetime_a = strtotime("+1 day");
+        $name_a = "Banner A";
+        $uri_a = "http://www.example.com/image_a.jpg";
+        $weight_a = 0.1;
+
+        $bannerManager = new Banner\BannerManager\BannerManager();
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
+
+        // Adding the same banner a second time should trigger an exception
+        $bannerManager->add($from_datetime_a,$to_datetime_a,$weight_a,$name_a,$uri_a);
     }
 }
