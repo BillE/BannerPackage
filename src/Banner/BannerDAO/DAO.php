@@ -8,6 +8,7 @@ use InvalidArgumentException;
 /**
  * Layer of abstraction around banner objects.
  *  Supports basic CRUD operations.
+ *  Does NOT persist data.
  *
  */
 class DAO implements DAOInterface

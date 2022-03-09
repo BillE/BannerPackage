@@ -5,7 +5,7 @@ namespace Banner;
 use InvalidArgumentException;
 
 /**
- * Banner to be displayed by consumer of the Banner service.
+ * Banner to be displayed.
  *
  */
 class Banner

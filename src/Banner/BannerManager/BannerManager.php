@@ -7,7 +7,7 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * Controller for all interaction with Banner package.
+ * Controller for interaction with Banner package.
  *
  */
 class BannerManager
