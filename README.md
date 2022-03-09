@@ -23,6 +23,9 @@ Testing of major functionality is included at /tests/BannerTest.php and can be r
 
 `php vendor/bin/phpunit tests/BannerTest.php`
 
+Current testing is "block box" only, accessing the coe through class constructors and public methods. This should be 
+expanded to test all methods for more complete code coverage.
+
 ## Considerations
 ### Weight
 Each banner has a weight value, indicating the relative frequency with which it will be returned. 

@@ -3,7 +3,7 @@
 namespace Banner\BannerDAO;
 
 use Banner\Banner;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Layer of abstraction around banner objects.

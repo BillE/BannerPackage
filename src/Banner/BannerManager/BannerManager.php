@@ -5,7 +5,6 @@ use Banner\Banner;
 use Banner\BannerDAO\DAO;
 use Exception;
 use InvalidArgumentException;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Controller for all interaction with Banner package.
@@ -16,7 +15,7 @@ class BannerManager
     private array $office_ips;
     private object $dao;
 
-    #[Pure] function __construct()
+    function __construct()
     {
         $this->office_ips = array('192.0.2.10', '198.51.100.3', '203.0.113.254');
         $this->dao = new DAO();

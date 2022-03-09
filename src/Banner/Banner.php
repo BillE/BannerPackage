@@ -2,7 +2,7 @@
 
 namespace Banner;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Banner to be displayed by consumer of the Banner service.

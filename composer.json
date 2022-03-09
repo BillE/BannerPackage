@@ -8,8 +8,7 @@
     }
   ],
   "require": {
-    "phpunit/phpunit": "9.5.2",
-    "ext-http": "*"
+    "phpunit/phpunit": "9.5.2"
   },
   "autoload": {
     "psr-4": {
