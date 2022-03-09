@@ -7,8 +7,8 @@ through an API server.
 
 ## Requirements
 - PHP version: This software was developed using PHP version 8.1.3. It has not been tested on previous version.
-- Composer: This package manager is required. It can be found at https://getcomposer.org/
-- PHPUnit: This package is used for all testing and can be found at https://phpunit.de/ It is set as a dependency in 
+- Composer: This package manager is required. It can be found at https://getcomposer.org/.
+- PHPUnit: This package is used for all testing and can be found at https://phpunit.de/. It is listed as a dependency in the 
 composer.json and so should not need to be downloaded manually. 
 
 ## Details
@@ -17,13 +17,19 @@ A simple package has been built around the following classes. (Details can be se
 - BannerManager: The entry point for all external calls.
 - DAO: Interface for reading and writing Banner objects and (optionally) persisting to a data store.
 
+## Quick Start
+If PHP and Composer are installed on your target machine, do the following:
+ * Clone git repository
+ * CD to root directory of repository
+ * Initialize dependencies with command `composer install`
+ * Confirm unit test pass with command `php vendor/bin/phpunit tests/BannerTest.php`
 
 ## Tests
 Testing of major functionality is included at /tests/BannerTest.php and can be run from the command line as:
 
 `php vendor/bin/phpunit tests/BannerTest.php`
 
-Current testing is "block box" only, accessing the coe through class constructors and public methods. This should be 
+Current testing is "block box" only, accessing the code through class constructors and public methods. This should be 
 expanded to test all methods for more complete code coverage.
 
 ## Considerations
@@ -40,8 +46,8 @@ deployed to different geographical locations  and the consumer of the service ma
 we do not rely on default time zones or make assumptions about the time zone of interest.
 
 ### IP Address
-For method calls whose results depend upon IP Address, it is the responsibility of the **caller** to pass this in. 
-We do not attempt to guess the IP Address of the caller for various reasons. Though a web application using this code
+For method calls whose results depend upon IP address, it is the responsibility of the **caller** to pass this in. 
+We do not attempt to guess the IP address of the caller for various reasons. Though a web application using this code
 may want to capture the IP address of the client.
 
 ### Uniqueness

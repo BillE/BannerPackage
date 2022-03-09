@@ -10,10 +10,41 @@ use InvalidArgumentException;
  */
 class Banner
 {
+    /**
+     * The time (unix timestamp) to which the banner is available for display
+     *
+     * @var int
+     */
     private int $timestamp_to;
+
+    /**
+     * The time (unix timestamp) from which the banner is available for display (outside office)
+     *
+     * @var int The
+     */
     private int $timestamp_from;
+
+    /**
+     * The relative weighting of a banner, reflecting how often it will be displayed
+     *
+     * 0 > $weight >= 1
+     *
+     * @var float
+     */
     private float $weight;
+
+    /**
+     * Name of banner -- uniqueness is enforced
+     *
+     * @var string
+     */
     private string $name;
+
+    /**
+     * The URI of the banner to be displayed
+     *
+     * @var string
+     */
     private string $uri;
 
     /**
